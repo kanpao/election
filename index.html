@@ -4,86 +4,102 @@
   <base target="_top">
   <meta charset="UTF-8">
   <title>เลือกตั้งสมาชิกสภา อบจ.กาญจนบุรี 2570</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/ico" href="https://kanpao.github.io/images/favicon.ico">
+    <link rel="icon" href="https://kanpao.github.io/images/favicon.png" sizes="16x16 32x32 64x64" type="image/png">
+
+    <title>ผลคะแนนเลือกตั้งสมาชิกสภา อบจ.กาญจนบุรี 2570</title>
+    
+    <meta name="description" content="เกาะติดผลคะแนนเลือกตั้งสมาชิกสภาองค์การบริหารส่วนจังหวัดกาญจนบุรี 2570 แบบเรียลไทม์ (อย่างไม่เป็นทางการ)">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kanpao.github.io/election/">
+    <meta property="og:title" content="🔴 เกาะติดผลคะแนนเลือกตั้ง ส.อบจ.กาญจนบุรี 2570">
+    <meta property="og:image" content="https://kanpao.github.io/election/images/share-cover-election.jpg">
+
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Kanit', sans-serif; background-color: #0f172a; color: #fff; min-height: 100vh; display: flex; flex-direction: column; }
-    .bg-grid-pattern { background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px); background-size: 40px 40px; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: -1; }
-
-    .desktop-nav { display: none; flex-wrap: wrap; justify-content: center; gap: 8px; }
-
-    .list-card { 
-      background: rgba(30, 41, 59, 0.6); 
-      backdrop-filter: blur(10px); 
-      border: 1px solid rgba(255, 255, 255, 0.1); 
-      transition: 0.3s; 
-      position: relative; 
-      overflow: visible !important; 
+    * { font-family: 'Kanit', sans-serif; }
+    
+    .gradient-bg { background: linear-gradient(135deg, #1a3263 0%, #547792 100%); min-height: 100vh; display: flex; flex-direction: column; }
+    .card-hover { transition: all 0.3s ease; }
+    .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+    
+    .winner-card {
+        background: linear-gradient(135deg, #FFFBEB 0%, #FFFFFF 100%) !important;
+        border: 2px solid #FCD34D !important;
+        position: relative;
+        animation: glowPulse 2s infinite alternate;
+        z-index: 10;
     }
-
-    .winner-spacing { margin-top: 80px !important; }
 
     .shimmer-wrapper {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      overflow: hidden; border-radius: inherit; pointer-events: none;
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        overflow: hidden; border-radius: inherit; pointer-events: none;
     }
-    .shimmer-effect::before {
-      content: ''; position: absolute; top: -50%; left: -100%; width: 200%; height: 200%;
-      background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.2), transparent);
-      animation: shimmer 3s linear infinite;
-    }
-
-    .winner-card-gold {
-      border: 2px solid #FCD34D !important;
-      animation: glowPulse 2s infinite alternate;
-      background: linear-gradient(135deg, rgba(45, 34, 12, 0.9) 0%, rgba(30, 41, 59, 0.8) 100%) !important;
-      z-index: 10;
+    
+    .shimmer-wrapper::before {
+        content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.4), transparent);
+        animation: shimmer 3s linear infinite;
+        pointer-events: none;
     }
 
-    @keyframes glowPulse {
-      0% { box-shadow: 0 0 5px rgba(252, 211, 77, 0.3); }
-      100% { box-shadow: 0 0 25px rgba(252, 211, 77, 0.7); border-color: #F59E0B; }
-    }
-    @keyframes shimmer {
-      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-    }
-    @keyframes bounce {
-      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-      40% { transform: translateY(-35px); } 60% { transform: translateY(-15px); }
-    }
     .bounce-anim { display: inline-block; animation: bounce 2s infinite; position: relative; z-index: 50; }
 
-    @media (min-width: 1024px) {
-      .desktop-nav { display: flex; } .mobile-nav-toggle { display: none; }
+    @keyframes glowPulse {
+        0% { box-shadow: 0 0 5px rgba(252, 211, 77, 0.2); }
+        100% { box-shadow: 0 0 20px rgba(252, 211, 77, 0.6); border-color: #F59E0B; }
     }
+
+    @keyframes shimmer {
+        0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+        100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+        40% { transform: translateY(-10px); }
+        60% { transform: translateY(-4px); }
+    }
+
+    .list-card { background: #FFFFFF; border: 1px solid rgba(0, 0, 0, 0.05); }
+    .winner-spacing { margin-top: 60px !important; }
+    .desktop-nav { display: none; flex-wrap: nowrap; justify-content: center; gap: 4px; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none; }
+    .desktop-nav::-webkit-scrollbar { display: none; }
+    @media (min-width: 1024px) { .desktop-nav { display: flex; } .mobile-nav-toggle { display: none; } }
+    
     .badge-rank-1 { background: linear-gradient(135deg, #FFD700, #FFA500); color: #000; box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); border: 2px solid #fff; }
+    
+    @keyframes trophyGlow {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5)); }
+      50% { transform: scale(1.3); filter: drop-shadow(0 0 25px rgba(255, 215, 0, 1)); }
+    }
+    .trophy-glow { display: inline-block; animation: trophyGlow 1.5s ease-in-out infinite; color: #FFD700; margin-right: 10px; }
+    .solid-gold-trophy { filter: drop-shadow(0 0 8px rgba(255,215,0,0.8)) saturate(200%); }
   </style>
 </head>
-<body class="pb-10">
-  <div class="bg-grid-pattern"></div>
+<body class="gradient-bg pb-10">
   
-  <header class="sticky top-0 z-[100] bg-slate-900/95 border-b border-slate-700 backdrop-blur-md px-4 py-3">
-    <div class="container mx-auto flex justify-between items-center gap-4">
+  <header class="sticky top-0 z-[100] bg-white/95 border-b border-blue-100 backdrop-blur-md px-4 py-3 shadow-md">
+    <div class="container mx-auto flex justify-between items-center gap-2">
       <div class="flex items-center gap-3 shrink-0">
         <img src="https://kanpao.github.io/images/kanpao-logo-160px.png" class="w-10 h-10 md:w-12 md:h-12 object-contain" alt="Logo">
         <div class="hidden sm:block">
-          <h1 class="text-xs md:text-sm font-black tracking-tight leading-tight uppercase">
-            เลือกตั้งสมาชิกสภา อบจ.กาญจนบุรี <span class="text-yellow-500 ml-1">2570</span>
+          <h1 class="text-xs md:text-sm font-black tracking-tight leading-tight uppercase text-slate-800">
+            เลือกตั้งสมาชิกสภา อบจ.กาญจนบุรี <span class="text-blue-600 ml-1">2570</span>
           </h1>
         </div>
       </div>
-      <nav class="desktop-nav flex-1 px-4"></nav>
-      <button onclick="toggleMobileMenu()" class="mobile-nav-toggle p-2 bg-slate-800 rounded-lg border border-slate-600 shrink-0">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-        </svg>
+      <nav class="desktop-nav flex-1 px-2"></nav>
+      <button onclick="toggleMobileMenu()" class="mobile-nav-toggle p-2 bg-blue-600 rounded-lg text-white shadow-md shrink-0">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
       </button>
     </div>
   </header>
 
-  <div id="mobile-menu" class="fixed inset-0 bg-slate-900/98 z-[110] hidden flex-col p-6 overflow-y-auto">
+  <div id="mobile-menu" class="fixed inset-0 bg-[#1a3263]/98 z-[110] hidden flex-col p-6 overflow-y-auto">
     <div class="flex justify-between items-center mb-8">
       <h3 class="text-xl font-bold text-yellow-500 italic">เลือกเขตพื้นที่</h3>
       <button onclick="toggleMobileMenu()" class="p-2 text-white"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button>
@@ -92,15 +108,15 @@
   </div>
 
   <main class="container mx-auto px-4 max-w-4xl mt-10 flex-grow">
-    <div class="mb-10 border-b border-slate-700 pb-4 text-center md:text-left">
+    <div class="mb-10 border-b border-white/20 pb-4 text-center md:text-left text-white drop-shadow-md">
       <h2 id="section-title" class="text-2xl md:text-4xl font-extrabold italic uppercase tracking-tight leading-snug">กำลังโหลด...</h2>
-      <p id="update-time" class="text-[9px] text-slate-500 mt-2 uppercase tracking-widest"></p>
+      <p id="update-time" class="text-[10px] text-white/70 mt-2 uppercase tracking-widest"></p>
     </div>
     <div id="content-list" class="flex flex-col gap-8"></div>
   </main>
 
-  <footer class="text-center py-8 text-slate-500 text-[10px] md:text-xs mt-10 border-t border-slate-800 bg-slate-900/50 backdrop-blur-sm uppercase tracking-widest">
-    &copy; 2026 All Rights Reserved Powered by Mr.Wansawang Kanchanakaree
+  <footer class="text-center py-8 text-white/60 text-[10px] md:text-xs mt-10 border-t border-white/10 uppercase tracking-widest">
+    &copy; 2026 All Rights Reserved Powered by <a href="https://artwansawang.web.app/" target="_blank">Mr.Wansawang Kanchanakaree</a>
   </footer>
 
   <script>
@@ -108,10 +124,9 @@
     const menuItems = ["สรุปภาพรวม", "นายก อบจ.", "เมืองกาญจนบุรี", "ท่ามะกา", "ท่าม่วง", "ทองผาภูมิ", "ด่านมะขามเตี้ย", "ศรีสวัสดิ์", "สังขละบุรี", "หนองปรือ", "ห้วยกระเจา", "ไทรโยค", "บ่อพลอย", "พนมทวน", "เลาขวัญ"];
     let currentTab = menuItems[0]; 
     let electionData = null;
+    let hasFiredConfetti = false;
 
-    function toggleMobileMenu() {
-      document.getElementById('mobile-menu').classList.toggle('hidden');
-    }
+    function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
 
     async function loadData() {
       try {
@@ -125,6 +140,22 @@
       } catch(e) { console.error("Error"); }
     }
 
+    function launchFireworks() {
+      if (hasFiredConfetti) return; 
+      hasFiredConfetti = true;
+      var duration = 10 * 1000;
+      var animationEnd = Date.now() + duration;
+      var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 90 };
+      function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+      var interval = setInterval(function() {
+        var timeLeft = animationEnd - Date.now();
+        if (timeLeft <= 0) return clearInterval(interval);
+        var particleCount = 50 * (timeLeft / duration);
+        confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
+        confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
+      }, 250);
+    }
+
     function render() {
       if (!electionData) return;
       const { candidates, showWinnerEffects } = electionData;
@@ -134,7 +165,13 @@
       renderNavs();
 
       if (currentTab === "สรุปภาพรวม") {
-        title.innerHTML = '<span class="text-yellow-500">🏆 สรุปคะแนนสูงสุด</span> (อย่างไม่เป็นทางการ)';
+        if (showWinnerEffects === 'ON') {
+           title.innerHTML = '<span class="trophy-glow">🏆</span><span class="text-yellow-300">สรุปคะแนนสูงสุด</span> (อย่างไม่เป็นทางการ)';
+           launchFireworks();
+        } else {
+           title.innerHTML = '<span class="text-yellow-300">🏆 สรุปคะแนนสูงสุด</span> (อย่างไม่เป็นทางการ)';
+           hasFiredConfetti = false;
+        }
         
         const allZones = {};
         candidates.forEach(c => {
@@ -144,59 +181,45 @@
         });
 
         const sortedKeys = Object.keys(allZones).sort((a, b) => {
-           const distA = a.split('|')[0];
-           const distB = b.split('|')[0];
-           const zoneA = parseInt(a.split('|')[1]) || 0;
-           const zoneB = parseInt(b.split('|')[1]) || 0;
-           
-           if (distA !== distB) {
-             return menuItems.indexOf(distA) - menuItems.indexOf(distB);
-           }
+           const distA = a.split('|')[0]; const distB = b.split('|')[0];
+           const zoneA = parseInt(a.split('|')[1]) || 0; const zoneB = parseInt(b.split('|')[1]) || 0;
+           if (distA !== distB) return menuItems.indexOf(distA) - menuItems.indexOf(distB);
            return zoneA - zoneB;
         });
 
         sortedKeys.forEach(key => {
           const cList = allZones[key];
           cList.sort((a,b) => b.score - a.score);
-          if(cList.length > 0) {
-            const winner = cList[0];
-            list.appendChild(createCard(winner, 1, winner.score, true, showWinnerEffects));
-          }
+          if(cList.length > 0) list.appendChild(createCard(cList[0], 1, cList[0].score, true, showWinnerEffects));
         });
 
-      } else if (currentTab === "นายก อบจ.") {
-        title.innerText = "ผลการเลือกตั้ง นายกองค์การบริหารส่วนจังหวัดกาญจนบุรี";
-        const cList = candidates.filter(c => c.district === "นายก อบจ.").sort((a,b) => b.score - a.score);
-        const max = cList.length > 0 ? cList[0].score : 1;
-        cList.forEach((c, i) => list.appendChild(createCard(c, i+1, max, false, showWinnerEffects)));
       } else {
-        title.innerText = `เขตอำเภอ${currentTab}`;
-        
-        const distCandidates = candidates.filter(c => c.district === currentTab);
-        
-        const zones = {};
-        distCandidates.forEach(c => {
-           const z = c.zone || "ทั่วไป";
-           if(!zones[z]) zones[z] = [];
-           zones[z].push(c);
-        });
+        hasFiredConfetti = false;
 
-        const sortedZones = Object.keys(zones).sort((a,b) => parseInt(a) - parseInt(b));
+        if (currentTab === "นายก อบจ.") {
+            title.innerText = "ผลการเลือกตั้ง นายกองค์การบริหารส่วนจังหวัดกาญจนบุรี";
+            const cList = candidates.filter(c => c.district === "นายก อบจ.").sort((a,b) => b.score - a.score);
+            const max = cList.length > 0 ? cList[0].score : 1;
+            cList.forEach((c, i) => list.appendChild(createCard(c, i+1, max, false, showWinnerEffects)));
+        } else {
+            title.innerText = `เขตอำเภอ${currentTab}`;
+            const distCandidates = candidates.filter(c => c.district === currentTab);
+            const zones = {};
+            distCandidates.forEach(c => { const z = c.zone || "ทั่วไป"; if(!zones[z]) zones[z] = []; zones[z].push(c); });
+            const sortedZones = Object.keys(zones).sort((a,b) => parseInt(a) - parseInt(b));
 
-        sortedZones.forEach(z => {
-           const zoneHeader = document.createElement('div');
-           zoneHeader.className = "text-xl md:text-2xl font-bold text-yellow-500 mt-8 mb-4 border-l-4 border-yellow-500 pl-4";
-           zoneHeader.innerText = `เขต ${z} อ.${currentTab}`;
-           list.appendChild(zoneHeader);
+            sortedZones.forEach(z => {
+               const zoneHeader = document.createElement('div');
+               zoneHeader.className = "text-2xl md:text-4xl font-extrabold text-yellow-300 mt-10 mb-6 border-l-[6px] border-yellow-300 pl-4 drop-shadow-md";
+               zoneHeader.innerText = `เขต ${z}`;
+               list.appendChild(zoneHeader);
 
-           const cList = zones[z].sort((a,b) => b.score - a.score);
-           const max = cList.length > 0 ? cList[0].score : 1;
+               const cList = zones[z].sort((a,b) => b.score - a.score);
+               const max = cList.length > 0 ? cList[0].score : 1;
+               cList.forEach((c, i) => list.appendChild(createCard(c, i+1, max, false, showWinnerEffects)));
+            });
 
-           cList.forEach((c, i) => list.appendChild(createCard(c, i+1, max, false, showWinnerEffects)));
-        });
-
-        if (distCandidates.length === 0) {
-           list.innerHTML = `<div class="text-center text-slate-500 py-10 border border-dashed border-slate-700 rounded-xl">ยังไม่มีข้อมูลในเขตนื้</div>`;
+            if (distCandidates.length === 0) list.innerHTML = `<div class="text-center text-white/70 py-10 border border-dashed border-white/30 rounded-xl">ยังไม่มีข้อมูลในเขตนื้</div>`;
         }
       }
     }
@@ -208,16 +231,15 @@
 
       menuItems.forEach(item => {
         const active = currentTab === item;
-        let extraClass = item === "นายก อบจ." ? "border-yellow-500/50 text-yellow-100" : "";
         
         const dBtn = document.createElement('button');
-        dBtn.className = `px-3 py-1.5 rounded-md text-[10px] md:text-xs font-bold transition whitespace-nowrap ${active ? 'bg-yellow-500 text-black shadow-lg' : 'bg-slate-800 text-slate-400 hover:text-white border border-slate-700'} ${extraClass}`;
+        dBtn.className = `px-2 py-1.5 rounded-md text-[10px] xl:text-xs font-bold transition whitespace-nowrap ${active ? 'bg-yellow-500 text-slate-900 shadow-lg' : 'bg-white/80 text-slate-600 hover:bg-white border border-white'}`;
         dBtn.innerText = item;
         dBtn.onclick = () => { currentTab = item; render(); };
         desktop.appendChild(dBtn);
 
         const mBtn = document.createElement('button');
-        mBtn.className = `w-full p-4 rounded-xl text-lg font-bold border ${active ? 'bg-yellow-500 text-black border-yellow-500' : 'bg-slate-800 text-white border-slate-700'}`;
+        mBtn.className = `w-full p-4 rounded-xl text-lg font-bold border ${active ? 'bg-yellow-500 text-slate-900 border-yellow-500' : 'bg-slate-800 text-white border-slate-700'}`;
         mBtn.innerText = item;
         mBtn.onclick = () => { currentTab = item; toggleMobileMenu(); render(); };
         mobile.appendChild(mBtn);
@@ -227,49 +249,57 @@
     function createCard(c, rank, max, isSum, winnerStatus) {
       const div = document.createElement('div');
       const pct = max > 0 ? (c.score / max) * 100 : 0;
+      
+      // ตรวจสอบเงื่อนไข: ที่ 1 และ สถานะ ON
       const isWinnerOn = (rank === 1 && winnerStatus === 'ON');
+      
+      // เอฟเฟกต์เต็มรูปแบบ (เฉพาะหน้าเขต และ ON)
       const useFullEffect = (isWinnerOn && !isSum);
 
-      const crown = useFullEffect ? '<div class="absolute -top-14 left-6 text-5xl bounce-anim">👑</div>' : '';
-      const trophy = useFullEffect ? '<span class="ml-2 bounce-anim text-3xl">🏆</span>' : (rank === 1 && !isSum ? '🏆' : '');
+      const crown = useFullEffect ? '<div class="absolute -top-12 left-6 text-5xl bounce-anim">👑</div>' : '';
+      
+      // --- แก้ไขตรงนี้: ถ้วยจะขึ้นก็ต่อเมื่อ isWinnerOn เป็นจริงเท่านั้น ---
+      const trophy = useFullEffect ? '<span class="ml-2 bounce-anim text-3xl solid-gold-trophy">🏆</span>' : (isWinnerOn && !isSum ? '🏆' : '');
+
+      const winnerText = useFullEffect ? '<p class="text-sm md:text-lg text-yellow-600 font-bold animate-pulse mt-1 drop-shadow-sm leading-tight">🏅 ผู้ชนะคะแนนเลือกตั้งอย่างไม่เป็นทางการ</p>' : '';
 
       let districtLabel = "";
       if (isSum) {
-         if (c.district === "นายก อบจ.") {
-            districtLabel = "นายก อบจ.กาญจนบุรี";
-         } else {
-            // --- แก้ไขตรงนี้: เพิ่ม อ. นำหน้า ---
-            districtLabel = `อ.${c.district} เขต ${c.zone}`; 
-         }
+         districtLabel = (c.district === "นายก อบจ.") ? "นายก อบจ.กาญจนบุรี" : `อ.${c.district} เขต ${c.zone}`; 
       }
 
-      div.className = `list-card rounded-2xl p-6 flex items-center gap-4 ${useFullEffect ? 'winner-card-gold winner-spacing' : ''}`;
+      let nameTextColor = rank === 1 ? 'text-slate-900' : 'text-slate-700';
+      let scoreTextColor = rank === 1 ? 'text-blue-600' : 'text-slate-800';
+
+      div.className = `list-card card-hover rounded-2xl p-6 flex items-center gap-4 ${useFullEffect ? 'winner-card winner-spacing' : 'bg-white shadow-md'}`;
       
       div.innerHTML = `
-        ${useFullEffect ? '<div class="shimmer-wrapper shimmer-effect"></div>' : ''}
+        ${useFullEffect ? '<div class="shimmer-wrapper"></div>' : ''}
         ${crown}
         <div class="relative shrink-0 z-10">
-          <div class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-slate-800 border-2 ${useFullEffect ? 'border-yellow-400' : 'border-slate-600'} overflow-hidden flex items-center justify-center">
+          <div class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-slate-100 border-2 ${useFullEffect ? 'border-yellow-400 shadow-md' : 'border-slate-300'} overflow-hidden flex items-center justify-center">
             ${(c.image && c.image.toString().startsWith('http')) 
               ? `<img src="${c.image}" class="w-full h-full object-cover">` 
-              : `<span class="text-4xl font-black text-slate-700">${c.name.charAt(0)}</span>`
+              : `<span class="text-4xl font-black text-slate-400">${c.name.charAt(0)}</span>`
             }
           </div>
-          <div class="absolute -bottom-1 -right-1 w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center font-black z-10 ${rank === 1 ? 'badge-rank-1' : 'bg-slate-700 text-slate-300 border-2 border-slate-500'} text-sm md:text-base">${c.number}</div>
+          <div class="absolute -bottom-1 -right-1 w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center font-black z-10 ${rank === 1 ? 'badge-rank-1' : 'bg-slate-200 text-slate-600 border-2 border-white shadow-sm'} text-sm md:text-base">${c.number}</div>
         </div>
         <div class="flex-1 min-w-0 z-10 relative mt-1">
-          ${isSum ? `<div class="text-xs md:text-sm text-yellow-500 font-bold uppercase mb-1 tracking-wider">${districtLabel}</div>` : ''}
-          
-          <div class="text-xl md:text-2xl font-black truncate flex items-center ${rank === 1 ? 'text-white' : 'text-slate-200'}">
+          ${isSum ? `<div class="text-xs md:text-sm text-blue-600 font-bold uppercase mb-1 tracking-wider">${districtLabel}</div>` : ''}
+          <div class="text-xl md:text-2xl font-black truncate flex items-center ${nameTextColor}">
             ${c.name} ${trophy}
           </div>
-          <div class="w-full bg-slate-900/50 h-3 md:h-4 rounded-full mt-3 overflow-hidden border border-slate-700">
-            <div class="h-full bg-gradient-to-r from-yellow-400 to-orange-500 transition-all duration-1000" style="width:${pct}%"></div>
+          
+          ${winnerText}
+
+          <div class="w-full bg-slate-200 h-3 md:h-4 rounded-full mt-3 overflow-hidden shadow-inner">
+            <div class="h-full bg-gradient-to-r from-blue-600 to-cyan-400 transition-all duration-1000" style="width:${pct}%"></div>
           </div>
         </div>
         <div class="text-right shrink-0 z-10 pl-2">
-            <div class="text-[10px] md:text-xs text-slate-500 mb-1 font-bold uppercase tracking-tighter">SCORE</div>
-            <div class="text-3xl md:text-4xl font-black ${rank === 1 ? 'text-yellow-500' : 'text-white'}">${c.score.toLocaleString()}</div>
+            <div class="text-[10px] md:text-xs text-slate-500 mb-1 font-bold tracking-tighter">คะแนน</div>
+            <div class="text-3xl md:text-4xl font-black ${scoreTextColor}">${c.score.toLocaleString()}</div>
         </div>
       `;
       return div;
