@@ -249,18 +249,11 @@
     function createCard(c, rank, max, isSum, winnerStatus) {
       const div = document.createElement('div');
       const pct = max > 0 ? (c.score / max) * 100 : 0;
-      
-      // ตรวจสอบเงื่อนไข: ที่ 1 และ สถานะ ON
       const isWinnerOn = (rank === 1 && winnerStatus === 'ON');
-      
-      // เอฟเฟกต์เต็มรูปแบบ (เฉพาะหน้าเขต และ ON)
       const useFullEffect = (isWinnerOn && !isSum);
 
       const crown = useFullEffect ? '<div class="absolute -top-12 left-6 text-5xl bounce-anim">👑</div>' : '';
-      
-      // --- แก้ไขตรงนี้: ถ้วยจะขึ้นก็ต่อเมื่อ isWinnerOn เป็นจริงเท่านั้น ---
-      const trophy = useFullEffect ? '<span class="ml-2 bounce-anim text-3xl solid-gold-trophy">🏆</span>' : (isWinnerOn && !isSum ? '🏆' : '');
-
+      const trophy = useFullEffect ? '<span class="ml-1 bounce-anim text-3xl solid-gold-trophy align-middle">🏆</span>' : (isWinnerOn && !isSum ? '🏆' : '');
       const winnerText = useFullEffect ? '<p class="text-sm md:text-lg text-yellow-600 font-bold animate-pulse mt-1 drop-shadow-sm leading-tight">🏅 ผู้ชนะคะแนนเลือกตั้งอย่างไม่เป็นทางการ</p>' : '';
 
       let districtLabel = "";
@@ -270,6 +263,9 @@
 
       let nameTextColor = rank === 1 ? 'text-slate-900' : 'text-slate-700';
       let scoreTextColor = rank === 1 ? 'text-blue-600' : 'text-slate-800';
+
+      // --- แก้ไข: การปัดตกบรรทัดเมื่อจอเล็ก (แทนที่เว้นวรรคด้วย <br class="md:hidden">) ---
+      const mobileName = c.name.replace(' ', '<br class="md:hidden"> ');
 
       div.className = `list-card card-hover rounded-2xl p-6 flex items-center gap-4 ${useFullEffect ? 'winner-card winner-spacing' : 'bg-white shadow-md'}`;
       
@@ -287,8 +283,9 @@
         </div>
         <div class="flex-1 min-w-0 z-10 relative mt-1">
           ${isSum ? `<div class="text-xs md:text-sm text-blue-600 font-bold uppercase mb-1 tracking-wider">${districtLabel}</div>` : ''}
-          <div class="text-xl md:text-2xl font-black truncate flex items-center ${nameTextColor}">
-            ${c.name} ${trophy}
+          
+          <div class="text-xl md:text-2xl font-black leading-tight ${nameTextColor}">
+            ${mobileName} ${trophy}
           </div>
           
           ${winnerText}
