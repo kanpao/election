@@ -92,7 +92,6 @@
   
   <header class="sticky top-0 z-[100] bg-white/95 border-b border-blue-100 backdrop-blur-md px-4 py-3 shadow-md">
     <div class="container mx-auto flex justify-between items-center gap-4">
-      
       <div class="flex items-center gap-2 md:gap-3 min-w-0 md:shrink-0">
         <img src="https://kanpao.github.io/images/kanpao-logo-160px.png" class="w-10 h-10 md:w-12 md:h-12 object-contain shrink-0" alt="Logo">
         <div class="min-w-0">
@@ -101,13 +100,10 @@
           </h1>
         </div>
       </div>
-
       <nav class="desktop-nav flex-1 px-2"></nav>
-
       <button onclick="toggleMobileMenu()" class="mobile-nav-toggle p-2 bg-blue-600 rounded-lg text-white shadow-md shrink-0">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
       </button>
-      
     </div>
   </header>
 
@@ -192,17 +188,32 @@
           allZones[key].push(c);
         });
 
-        const sortedKeys = Object.keys(allZones).sort((a, b) => {
-           const distA = a.split('|')[0]; const distB = b.split('|')[0];
-           const zoneA = parseInt(a.split('|')[1]) || 0; const zoneB = parseInt(b.split('|')[1]) || 0;
-           if (distA !== distB) return menuItems.indexOf(distA) - menuItems.indexOf(distB);
-           return zoneA - zoneB;
-        });
-
-        sortedKeys.forEach(key => {
+        const summaryByDistrict = {};
+        Object.keys(allZones).forEach(key => {
           const cList = allZones[key];
           cList.sort((a,b) => b.score - a.score);
-          if(cList.length > 0) list.appendChild(createCard(cList[0], 1, cList[0].score, true, showWinnerEffects));
+          if(cList.length > 0) {
+            const winner = cList[0];
+            const dist = winner.district;
+            if(!summaryByDistrict[dist]) summaryByDistrict[dist] = [];
+            summaryByDistrict[dist].push(winner);
+          }
+        });
+
+        const sortedDistricts = Object.keys(summaryByDistrict).sort((a,b) => menuItems.indexOf(a) - menuItems.indexOf(b));
+
+        sortedDistricts.forEach(dist => {
+           let headerText = dist === "นายก อบจ." ? "นายกองค์การบริหารส่วนจังหวัด" : `อ.${dist}`;
+           const distHeader = document.createElement('div');
+           distHeader.className = "text-2xl md:text-4xl font-extrabold text-yellow-300 mt-10 mb-6 border-l-[6px] border-yellow-300 pl-4 drop-shadow-md";
+           distHeader.innerText = headerText;
+           list.appendChild(distHeader);
+
+           const winners = summaryByDistrict[dist].sort((a,b) => parseInt(a.zone||0) - parseInt(b.zone||0));
+
+           winners.forEach(winner => {
+             list.appendChild(createCard(winner, 1, winner.score, true, showWinnerEffects));
+           });
         });
 
       } else {
@@ -270,13 +281,12 @@
 
       let districtLabel = "";
       if (isSum) {
-         districtLabel = (c.district === "นายก อบจ.") ? "นายก อบจ.กาญจนบุรี" : `อ.${c.district} เขต ${c.zone}`; 
+         districtLabel = (c.district === "นายก อบจ.") ? "นายก อบจ.กาญจนบุรี" : `เขต ${c.zone}`; 
       }
 
       let nameTextColor = rank === 1 ? 'text-slate-900' : 'text-slate-700';
       let scoreTextColor = rank === 1 ? 'text-blue-600' : 'text-slate-800';
 
-      // --- แก้ไข: การปัดตกบรรทัดเมื่อจอเล็ก (แทนที่เว้นวรรคด้วย <br class="md:hidden">) ---
       const mobileName = c.name.replace(' ', '<br class="md:hidden"> ');
 
       div.className = `list-card card-hover rounded-2xl p-6 flex items-center gap-4 ${useFullEffect ? 'winner-card winner-spacing' : 'bg-white shadow-md'}`;
@@ -294,7 +304,8 @@
           <div class="absolute -bottom-1 -right-1 w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center font-black z-10 ${rank === 1 ? 'badge-rank-1' : 'bg-slate-200 text-slate-600 border-2 border-white shadow-sm'} text-sm md:text-base">${c.number}</div>
         </div>
         <div class="flex-1 min-w-0 z-10 relative mt-1">
-          ${isSum ? `<div class="text-xs md:text-sm text-blue-600 font-bold uppercase mb-1 tracking-wider">${districtLabel}</div>` : ''}
+          
+          ${isSum ? `<div class="text-base md:text-lg text-blue-600 font-extrabold uppercase mb-1 tracking-wider">${districtLabel}</div>` : ''}
           
           <div class="text-xl md:text-2xl font-black leading-tight ${nameTextColor}">
             ${mobileName} ${trophy}
